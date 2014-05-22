@@ -9,16 +9,16 @@ All other files in the buildpack are auxillary files that get loaded, read or in
 three main scripts.
 
 When you upload your app to your cloud provider (for example with `git push`) the cloud provider
-(heroku, cloudControl, Stackato or some PaaS) will execute the three scripts in sequence
+(heroku, cloudControl, Stackato or some other PaaS) will execute the three scripts in sequence
 in order to build your app:
 
 1. `bin/detect` is a sort of "sanity-check" whether the app you uploaded
    matches the expectations of the build pack.
-2. `bin/compile` runs any preparation work your app needs in order to run
+2. `bin/compile` runs any preparation work your app needs in order to run  
    e.g. installs required packages, collects static files...
 3. `bin/release` returns data to the cloud provider that can speficy
    what command to run in order to run your server, or other
-   information that the cloud provider might need.
+   information that the cloud provider might need in order to run your app.
 
 When the buildpack has been run, the cloud provider will execute the jobs specified in the file
 `Procfile` in the app directory. (Save for some intermediate steps, that you can largely ignore)
@@ -32,7 +32,7 @@ _Read more:_
 
 Usage
 -----
-On cloudControl you use the buildpack this way:
+On cloudControl you can use the buildpack this way:
 
 ~~~bash
 $ cctrlapp APP_NAME create custom --buildpack https://github.com/bitblueprint/gcl-buildpack-python.git
@@ -41,7 +41,7 @@ $ cctrlapp APP_NAME create custom --buildpack https://github.com/bitblueprint/gc
 The buildpack will use Pip to install your dependencies, vendoring a copy of the Python runtime into your web container.
 
 _Read more:_
-[cloudControl: Custom buildpack feature](https://www.cloudcontrol.com/dev-center/Guides/Third-Party%20Buildpacks/Third-Party%20Buildpacks):
+[cloudControl: Custom buildpack feature](https://www.cloudcontrol.com/dev-center/Guides/Third-Party%20Buildpacks/Third-Party%20Buildpacks)
 
 Choose your Python version
 --------------------------
