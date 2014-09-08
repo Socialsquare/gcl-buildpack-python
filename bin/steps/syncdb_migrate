@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# Syntax sugar.
+indent() {
+  RE="s/^/       /"
+  [ $(uname) == "Darwin" ] && sed -l "$RE" || sed -u "$RE"
+}
+
+MANAGE_FILE=$(find . -maxdepth 3 -type f -name 'manage.py' | head -1)
+MANAGE_FILE=${MANAGE_FILE:-fakepath}
+
+[ -f $PAASPROVIDER_DIR/syncdb_disabled ] && DISABLE_SYNCDB=1
+[ -f $PAASPROVIDER_DIR/migrate_disabled ] && DISABLE_MIGRATE=1
+
+if [ ! "$DISABLE_SYNCDB" ] && [ -f "$MANAGE_FILE" ]; then
+    set +e
+
+    # syncdb
+    echo "-----> Running \`python manage.py syncdb\`"
+    python $MANAGE_FILE syncdb --noinput &> /dev/null
+
+    [ $? -ne 0 ] && {
+        echo " !     Error running \`python manage.py syncdb\`."
+    }
+
+    echo
+
+
+fi
+
+if [ ! "$DISABLE_MIGRATE" ] && [ -f "$MANAGE_FILE" ]; then
+
+    echo "-----> Running \`python manage.py migrate\`"
+    python $MANAGE_FILE migrate --noinput
+
+     [ $? -ne 0 ] && {
+         echo " !     Error running \`python manage.py migrate\`."
+     }
+
+     echo
+
+fi
+

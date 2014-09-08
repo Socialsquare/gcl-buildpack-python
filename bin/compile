@@ -207,6 +207,12 @@ $APP_PYTHON_HOME_DIR/bin/pip install --use-mirrors -r requirements.txt --exists-
 [ ! "$FRESH_PYTHON" ] && bpwatch stop pip_install
 [ "$FRESH_PYTHON" ] && bpwatch stop pip_install_first
 
+# Django syncdb and migrate support.
+puts-step "Trying to sync and migrate database"
+bpwatch start syncdb_migrate
+  source $BIN_DIR/steps/syncdb_migrate
+bpwatch stop syncdb_migrate
+
 # Django collectstatic support.
 bpwatch start collectstatic
   source $BIN_DIR/steps/collectstatic
